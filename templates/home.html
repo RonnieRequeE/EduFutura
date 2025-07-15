@@ -13,9 +13,24 @@
             color: #1e90ff;
         }
     </style>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Bienvenido a EduFutura 🚀</h1>
-    <p>La plataforma educativa que estás construyendo desde cero.</p>
+    <h1>Bienvenido a EduFutura</h1>
+
+{% if usuario %}
+    <p>Bienvenido, {{ usuario }} 👋</p>
+    <a href="/panel">Ir al panel privado</a>
+    <form action="/logout" method="get">
+        <button type="submit">Cerrar sesión</button>
+    </form>
+{% else %}
+    <p>Estás como visitante</p>
+    <a href="/login">Iniciar sesión</a> |
+    <a href="/register">Crear cuenta</a>
+{% endif %}
+
+
+
 </body>
 </html>

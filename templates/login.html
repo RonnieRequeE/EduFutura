@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EduFutura - Iniciar Sesión</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Iniciar sesión</h2>
+    <form method="post" action="/login">
+        <label for="email">Correo electrónico:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Ingresar</button>
+    </form>
+    <p><a href="/register">¿No tienes cuenta? Regístrate</a></p>
+</body>
+</html>
