@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ curso.titulo }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Saludo con dropdown -->
+    <div class="bienvenida-dropdown">
+        <button onclick="toggleDropdown()">Bienvenido, {{ usuario }}</button>
+        <div id="dropdown-menu" class="dropdown-menu">
+            <form action="/logout" method="get">
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Título y descripción -->
+    <h2>{{ curso.titulo }}</h2>
+    <div class="descripcion-curso">
+        <p>{{ curso.descripcion }}</p>
+    </div>
+
+    <!-- Módulos del curso -->
+    <div class="tarjeta">
+        <h3>Módulos del curso</h3>
+        <ul>
+            {% for modulo in curso.modulos %}
+                <li>{{ modulo }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="tarjeta acceso-evaluacion">
+        <h3>¿Listo para poner a prueba tus conocimientos?</h3>
+            <p>Resuelve la evaluación y confirma tu dominio del contenido.</p>
+        <a href="/curso/{{ id }}/evaluacion">
+            <button>Ir a la evaluación</button>
+        </a>
+    </div>
+
+    <!-- Notas del curso -->
+    <div class="tarjeta notas-curso">
+        <h3>Notas del curso</h3>
+        <table class="tabla-notas">
+            <tr>
+                <th>Módulo</th>
+                <th>Evaluación</th>
+                <th>Nota</th>
+            </tr>
+            <tr>
+                <td>Variables y Tipos</td>
+                <td>Quiz de introducción</td>
+                <td>85</td>
+            </tr>
+            <tr>
+                <td>Condicionales</td>
+                <td>Ejercicio práctico</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>Funciones</td>
+                <td>Evaluación final</td>
+                <td>75</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="resumen-final">
+        <p><strong>Promedio final:</strong> {{ promedio }} / Estado: <span>{{ estado }}</span></p>
+    </div>
+
+    <!-- Progreso del curso -->
+    <div class="progreso-container">
+        <label>Progreso del curso:</label>
+        <div class="barra-progreso">
+            <div class="barra-avance" style="width: 60%;"></div>
+        </div>
+        <span class="porcentaje">60% completado</span>
+    </div>
+
+    
+
+    <a href="/panel">← Volver al panel</a>
+
+    <!-- Script para desplegar logout -->
+    <script>
+      function toggleDropdown() {
+        const menu = document.getElementById('dropdown-menu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      }
+    </script>
+</body>
+
+</html>

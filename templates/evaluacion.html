@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluación - {{ curso.titulo }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="bienvenida-dropdown">
+        <button onclick="toggleDropdown()">Bienvenido, {{ usuario }}</button>
+        <div id="dropdown-menu" class="dropdown-menu">
+            <form action="/logout" method="get">
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <h2>Evaluación de: {{ curso.titulo }}</h2>
+
+    <div class="tarjeta quiz-curso">
+        <form method="post" class="opciones-formulario">
+        <p>¿Cuál es el tipo de estructura que permite repetir instrucciones en Python?</p>
+
+        <div class="opcion">
+            <label for="condicional">Condicional</label>
+            <input type="radio" id="condicional" name="respuesta" value="condicional">
+        </div>
+
+        <div class="opcion">
+            <label for="bucle">Bucle</label>
+            <input type="radio" id="bucle" name="respuesta" value="bucle">
+        </div>
+
+        <div class="opcion">
+            <label for="funcion">Función</label>
+            <input type="radio" id="funcion" name="respuesta" value="funcion">
+        </div>
+
+        <button type="submit">Enviar respuesta</button>
+        </form>
+
+
+
+        {% if resultado %}
+            <p><strong>Resultado:</strong> {{ resultado }}</p>
+        {% endif %}
+    </div>
+
+    <a href="/curso/{{ id }}">← Volver al curso</a>
+
+    <script>
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdown-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>

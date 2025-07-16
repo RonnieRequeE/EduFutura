@@ -50,3 +50,262 @@ a {
 a:hover {
     text-decoration: underline;
 }
+.tarjeta {
+    background-color: #fff;
+    border-left: 6px solid #3498db;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 600px;
+}
+
+.tarjeta h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+.bienvenida-superior {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+    font-family: Arial, sans-serif;
+    background-color: #ecf0f1;
+    padding: 6px 12px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.tarjeta.curso {
+    border-left: 6px solid #27ae60;
+    transition: transform 0.2s;
+}
+
+.tarjeta.curso:hover {
+    transform: scale(1.02);
+}
+
+.tarjeta.curso button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tarjeta.curso button:hover {
+    background-color: #1e8f4c;
+}
+.bienvenida-dropdown {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-family: Arial, sans-serif;
+}
+
+.bienvenida-dropdown button {
+    background-color: #ecf0f1;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #2c3e50;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    width: auto;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    padding: 10px;
+    z-index: 10;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.dropdown-menu button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.dropdown-menu button:hover {
+    background-color: #c0392b;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+.descripcion-curso {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    border-left: 6px solid #2980b9;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2c3e50;
+}
+
+.progreso-container {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.barra-progreso {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    margin-top: 8px;
+}
+
+.barra-avance {
+    height: 100%;
+    background-color: #27ae60;
+    width: 0%; /* dinámico con inline style */
+    border-radius: 10px 0 0 10px;
+    transition: width 0.6s ease;
+}
+
+.porcentaje {
+    display: block;
+    margin-top: 6px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.tabla-notas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.tabla-notas th, .tabla-notas td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.tabla-notas th {
+    background-color: #f0f4f8;
+    color: #2c3e50;
+}
+
+.notas-curso {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    border-left: 6px solid #f39c12;
+}
+
+.resumen-final {
+    max-width: 600px;
+    margin: 10px auto;
+    background-color: #fef8e7;
+    padding: 12px 20px;
+    border-left: 6px solid #f39c12;
+    border-radius: 6px;
+    font-size: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: #2c3e50;
+}
+
+.resumen-final span {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.opcion {
+    display: grid;
+    grid-template-columns: 1fr auto; /* columna de texto + columna de radio */
+    align-items: center; /* centra verticalmente */
+    margin-bottom: 10px;
+    gap: 10px; /* espacio entre texto y radio */
+}
+
+.opcion label {
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.opcion input[type="radio"] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+
+/* Botón de enviar respuesta */
+.quiz-curso button {
+    background-color: #8e44ad;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.quiz-curso button:hover {
+    background-color: #732d91;
+}
+
+/* Tarjeta de acceso desde curso */
+.acceso-evaluacion {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #f0fff5;
+    padding: 20px;
+    border-left: 6px solid #27ae60;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Botón en acceso-evaluacion */
+.acceso-evaluacion button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.acceso-evaluacion button:hover {
+    background-color: #1e8f4c;
+}
+
+
+
+
