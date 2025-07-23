@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel del Docente</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="menu-docente">
+    <div class="usuario-docente" onclick="toggleCerrarSesion()">
+      Bienvenido, {{ usuario }} 👨‍🏫 ▼
+    </div>
+    <div id="cerrar-sesion-docente" class="cerrar-sesion-docente">
+      <form action="/logout" method="get">
+        <button type="submit">Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+
+  <header>
+    <h1 class="titulo-panel">Panel del Docente</h1>
+    <p class="subtitulo-panel">Estas son las materias que te fueron asignadas por el administrador.</p>
+  </header>
+
+  <main class="contenedor-docente">
+    {% if materias %}
+      {% for id, materia in materias.items() %}
+      <div class="tarjeta-curso-docente">
+        <h3>{{ materia.nombre }}</h3>
+        <p class="intro-docente">Accede para gestionar módulos, evaluaciones y estudiantes.</p>
+        <div class="acciones-docente">
+            <div class="grupo-botones-docente">
+              <button onclick="window.location.href='/curso/{{ id }}'" class="boton-evaluacion"> Entrar al curso</button>
+
+              <button onclick="abrirModalEstudiantes('{{ id }}')" class="boton-evaluacion"> Ver estudiantes asignados</button>
+            </div>
+
+            <div id="modal-estudiantes-{{ id }}" class="modal-docente">
+              <div class="modal-contenido">
+                <span class="cerrar" onclick="cerrarModalEstudiantes('{{ id }}')">&times;</span>
+                <h3>Estudiantes asignados a "{{ materia.nombre }}"</h3>
+                <form>
+                  <label>Selecciona un estudiante:</label>
+                  <select name="correo_estudiante" required>
+                    {% for correo, materias_ids in asignaciones_estudiantes.items() %}
+                      {% if id in materias_ids %}
+                        <option value="{{ correo }}">{{ correo }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                  <button type="button">Detalles</button>
+                </form>
+              </div>
+            </div>
+
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="mensaje-vacio">No tienes materias asignadas actualmente.</p>
+    {% endif %}
+  </main>
+
+  <footer class="footer-docente">
+    <p>EduFutura © 2025 — Plataforma de gestión educativa</p>
+  </footer>
+
+  <script>
+    function toggleCerrarSesion() {
+      const menu = document.getElementById("cerrar-sesion-docente");
+      if (menu) {
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+    }
+    function abrirModalEstudiantes(id) {
+        document.getElementById("modal-estudiantes-" + id).style.display = "block";
+        }
+    function cerrarModalEstudiantes(id) {
+        document.getElementById("modal-estudiantes-" + id).style.display = "none";
+        }
+  </script>
+</body>
+</html>

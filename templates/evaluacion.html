@@ -6,15 +6,7 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="bienvenida-dropdown">
-        <button onclick="toggleDropdown()">Bienvenido, {{ usuario }}</button>
-        <div id="dropdown-menu" class="dropdown-menu">
-            <form action="/logout" method="get">
-                <button type="submit">Cerrar sesión</button>
-            </form>
-        </div>
-    </div>
-
+    
     <h2>Evaluación de: {{ curso.titulo }}</h2>
 
     <div class="tarjeta quiz-curso">

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel del Estudiante</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="menu-estudiante">
+    <div class="usuario-estudiante" onclick="toggleCerrarSesionEstudiante()">
+      Bienvenido, {{ usuario }} 👨‍🎓 ▼
+    </div>
+    <div id="cerrar-sesion-estudiante" class="cerrar-sesion-docente">
+      <form action="/logout" method="get">
+        <button type="submit">Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+
+  <header>
+    <h1 class="titulo-panel">Panel del Estudiante</h1>
+    <p class="subtitulo-panel">Estas son las materias que te fueron asignadas por el administrador.</p>
+  </header>
+
+  <main class="contenedor-estudiante">
+    {% if materias %}
+      {% for id, materia in materias.items() %}
+      <div class="tarjeta-curso-estudiante">
+        <h3>{{ materia.nombre }}</h3>
+        <p class="intro-curso centrado">Accede al contenido creado por tu docente.</p>
+        <div class="boton-centrado">
+        <a href="/curso/{{ id }}">
+            <button>Entrar al curso</button>
+        </a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="mensaje-vacio">No tienes materias asignadas actualmente.</p>
+    {% endif %}
+  </main>
+
+  <footer class="footer-estudiante">
+    <p>EduFutura © 2025 — Plataforma de gestión educativa</p>
+  </footer>
+
+  <script>
+    function toggleCerrarSesionEstudiante() {
+      const menu = document.getElementById("cerrar-sesion-estudiante");
+      if (menu) {
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+    }
+  </script>
+</body>
+</html>

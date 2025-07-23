@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% if editar %}Editar módulo{% else %}Crear módulo{% endif %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="contenedor-formulario">
+    <h2 class="titulo-formulario">
+      {% if editar %}
+        🔧 Editando módulo: {{ modulo.titulo }}
+      {% else %}
+        ➕ Crear nuevo módulo
+      {% endif %}
+    </h2>
+
+    <form action="{% if editar %}/actualizar_modulo{% else %}/guardar_modulo{% endif %}" method="post">
+      <!-- 🧠 Campos ocultos -->
+      <input type="hidden" name="materia_id" value="{{ materia_id }}">
+      {% if editar %}
+        <input type="hidden" name="modulo_id" value="{{ modulo.id }}">
+      {% endif %}
+
+      <!-- Tarjeta: Título -->
+      <div class="tarjeta-formulario">
+        <label for="titulo">Título del módulo</label>
+        <input type="text" id="titulo" name="titulo" value="{{ modulo.titulo if editar else '' }}" required>
+      </div>
+
+      <!-- Tarjeta: Descripción -->
+      <div class="tarjeta-formulario">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion">{{ modulo.descripcion if editar else '' }}</textarea>
+      </div>
+
+      <!-- Tarjeta: Recurso externo -->
+      <div class="tarjeta-formulario">
+        <label for="recurso">Recurso externo (link)</label>
+        <input type="url" id="recurso" name="recurso" value="{{ modulo.recurso if editar else '' }}">
+      </div>
+
+      <!-- Tarjeta: Fechas -->
+      <div class="tarjeta-formulario">
+        <label>Fecha de inicio</label>
+        <input type="date" name="inicio" value="{{ modulo.inicio if editar else '' }}">
+
+        <label>Fecha de cierre</label>
+        <input type="date" name="cierre" value="{{ modulo.cierre if editar else '' }}">
+      </div>
+
+      <!-- Tarjeta: Etiquetas -->
+      <div class="tarjeta-formulario">
+        <label for="etiquetas">Etiquetas</label>
+        <select id="etiquetas" name="etiquetas" multiple>
+          <option value="Introductorio" {% if editar and 'Introductorio' in modulo.etiquetas %}selected{% endif %}>Introductorio</option>
+          <option value="Teorico" {% if editar and 'Teorico' in modulo.etiquetas %}selected{% endif %}>Teórico</option>
+          <option value="Práctico" {% if editar and 'Práctico' in modulo.etiquetas %}selected{% endif %}>Práctico</option>
+          <option value="Evaluativo" {% if editar and 'Evaluativo' in modulo.etiquetas %}selected{% endif %}>Evaluativo</option>
+        </select>
+      </div>
+
+      <!-- Tarjeta: Botones inferiores -->
+
+      <div class="tarjeta-formulario">
+        <div class="botones-formulario">
+          <button type="submit" class="boton-evaluacion">
+            {% if editar %}Guardar cambios{% else %}Crear módulo{% endif %}
+          </button>
+
+          <button type="button" class="boton-evaluacion" onclick="window.location.href='/curso/{{ materia_id }}'">
+            ← Volver al curso
+          </button>
+        </div>
+      </div>
+    </form><br>
+
+    {% if editar %}
+    <form action="/crear_evaluacion" method="post">
+      <input type="hidden" name="materia_id" value="{{ materia_id }}">
+      <input type="hidden" name="modulo_id" value="{{ modulo.id }}">
+
+      <div class="tarjeta-formulario">
+        <h3 style="text-align: center; color: #2c3e50; margin-bottom: 16px;">📝 Evaluación del módulo</h3>
+
+        <label for="titulo_evaluacion">Título de la evaluación:</label>
+        <input type="text" name="titulo_evaluacion" id="titulo_evaluacion" placeholder="Ej. Quiz sobre Tipos de Datos">
+
+        <label for="descripcion_evaluacion">Instrucciones o descripción:</label>
+        <textarea name="descripcion_evaluacion" id="descripcion_evaluacion" rows="3" placeholder="Indica qué debe hacer el estudiante"></textarea>
+
+        <label for="tipo_evaluacion">Tipo de evaluación:</label>
+        <select name="tipo_evaluacion" id="tipo_evaluacion">
+          <option value="quiz">Quiz</option>
+          <option value="practica">Práctica</option>
+          <option value="reflexiva">Reflexiva</option>
+        </select>
+
+        <div class="grid-fechas">
+          <div>
+            <label for="inicio_evaluacion">Fecha de inicio:</label>
+            <input type="date" name="inicio_evaluacion" id="inicio_evaluacion">
+          </div>
+          <div>
+            <label for="cierre_evaluacion">Fecha de cierre:</label>
+            <input type="date" name="cierre_evaluacion" id="cierre_evaluacion">
+          </div>
+        </div>
+
+        <div class="botones-formulario">
+          <button type="submit" class="boton-evaluacion" name="accion" value="crear_evaluacion">📝 Crear evaluación</button>
+        </div>
+      </div>
+    </form><br>
+
+      <div class="tarjeta-formulario">
+        <div class="botones-formulario">
+          <button type="submit" class="boton-evaluacion">
+            {% if editar %}Guardar cambios{% else %}Crear módulo{% endif %}
+          </button>
+
+          <button type="button" class="boton-evaluacion" onclick="window.location.href='/curso/{{ materia_id }}'">
+            ← Volver al curso
+          </button>
+        </div>
+      </div>
+
+    <form action="/eliminar_modulo" method="post" onsubmit="return confirm('⚠️ ¿Estás seguro que deseas eliminar este módulo?\nEsta acción no se puede deshacer.')">
+      <input type="hidden" name="modulo_id" value="{{ modulo.id }}">
+      <button type="submit" class="boton-eliminar-ancha">❌ Eliminar módulo</button>
+    </form>
+    {% endif %}
+  </div>
+
+</body>
+</html>

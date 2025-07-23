@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel del Administrador</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="menu-docente">
+    <div class="usuario-docente" onclick="toggleCerrarSesion()">
+      Bienvenido, {{ usuario }} 👨‍💼 ▼
+    </div>
+    <div id="cerrar-sesion-docente" class="cerrar-sesion-docente">
+      <form action="/logout" method="get">
+        <button type="submit">Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+
+  <header>
+    <h1 class="titulo-panel">Panel del Administrador</h1>
+    <p class="subtitulo-panel">Gestión central de materias, docentes y estudiantes.</p>
+  </header>
+  {% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+      <div class="alerta-flash">
+        {{ mensajes[0] }}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main class="contenedor-docente">
+    {% if materias %}
+      {% for id, materia in materias.items() %}
+      <div class="tarjeta-curso-docente">
+        <div class="boton-eliminar" onclick="abrirConfirmacion('{{ id }}')">❌</div>
+        <h3>{{ materia.nombre }}</h3>
+        <p class="intro-docente">Docente asignado: {{ asignaciones_docentes[id] }}</p>
+
+        <div class="acciones-docente">
+          <button onclick="abrirModal('{{ id }}')" class="boton-evaluacion">Asignar docente</button>
+          <button onclick="abrirEstudiantes('{{ id }}')" class="boton-evaluacion">Asignar estudiantes</button>
+          <button onclick="abrirGestion('{{ id }}')" class="boton-evaluacion">Quitar estudiante</button>
+
+          <!-- Modal para asignar docente -->
+          <div id="modal-docente-{{ id }}" class="modal-docente">
+            <div class="modal-contenido">
+              <span class="cerrar" onclick="cerrarModal('{{ id }}')">&times;</span>
+              <h3>Asignar docente a "{{ materia.nombre }}"</h3>
+              <form action="/asignar_docente" method="post">
+                <input type="hidden" name="materia_id" value="{{ id }}">
+                <select name="correo_docente" required>
+                  <option value="" disabled selected>Selecciona un docente</option>
+                  {% for correo in docentes_disponibles %}
+                    <option value="{{ correo }}">{{ correo }}</option>
+                  {% endfor %}
+                </select>
+                <button type="submit">Asignar</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Modal para asignar estudiantes -->
+          <div id="modal-estudiante-{{ id }}" class="modal-docente">
+            <div class="modal-contenido">
+              <span class="cerrar" onclick="cerrarEstudiantes('{{ id }}')">&times;</span>
+              <h3>Asignar estudiantes a "{{ materia.nombre }}"</h3>
+              <form action="/asignar_estudiantes" method="post">
+                <input type="hidden" name="materia_id" value="{{ id }}">
+                <select name="correo_estudiante" required>
+                  <option value="" disabled selected>Selecciona un estudiante</option>
+                  {% for correo in estudiantes_disponibles %}
+                    <option value="{{ correo }}">{{ correo }}</option>
+                  {% endfor %}
+                </select>
+                <button type="submit">Asignar</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Modal para quitar estudiantes -->
+          <div id="modal-gestion-{{ id }}" class="modal-docente">
+            <div class="modal-contenido">
+              <span class="cerrar" onclick="cerrarGestion('{{ id }}')">&times;</span>
+              <h3>Estudiantes asignados a "{{ materia.nombre }}"</h3>
+              <form action="/quitar_estudiante" method="post">
+                <input type="hidden" name="materia_id" value="{{ id }}">
+                <select name="correo_estudiante" required>
+                  <option value="" disabled selected>Selecciona estudiante a quitar</option>
+                  {% for correo, materias_ids in asignaciones_estudiantes.items() %}
+                    {% if id in materias_ids %}
+                      <option value="{{ correo }}">{{ correo }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                <button type="submit" class="boton-evaluacion">Quitar estudiante</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Modal para confirmar eliminación -->
+          <div id="modal-confirmar-{{ id }}" class="modal-docente">
+            <div class="modal-contenido">
+              <span class="cerrar" onclick="cerrarConfirmacion('{{ id }}')">&times;</span>
+              <h3>¿Eliminar materia?</h3>
+              <p>¿Querés eliminar "<strong>{{ materia.nombre }}</strong>"? Esta acción no se puede deshacer.</p>
+              <form action="/eliminar_materia" method="post">
+                <input type="hidden" name="materia_id" value="{{ id }}">
+                <button type="submit" class="boton-evaluacion" style="background-color:#c0392b">Eliminar</button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="mensaje-vacio">No hay materias registradas actualmente.</p>
+    {% endif %}
+
+    <div class="tarjeta-curso-docente">
+      <h3>Crear nueva materia</h3>
+      <form action="/crear_materia" method="post">
+        <input type="text" name="nombre_materia" placeholder="Nombre de la materia" required>
+        <button type="submit">Crear materia</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer-docente">
+    <p>EduFutura © 2025 — Panel administrativo</p>
+  </footer>
+
+  <script>
+    function toggleCerrarSesion() {
+      const menu = document.getElementById("cerrar-sesion-docente");
+      if (menu) {
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+    }
+    function abrirModal(id) {
+      document.getElementById("modal-docente-" + id).style.display = "block";
+    }
+    function cerrarModal(id) {
+      document.getElementById("modal-docente-" + id).style.display = "none";
+    }
+    function abrirEstudiantes(id) {
+      document.getElementById("modal-estudiante-" + id).style.display = "block";
+    }
+    function cerrarEstudiantes(id) {
+      document.getElementById("modal-estudiante-" + id).style.display = "none";
+    }
+    function abrirGestion(id) {
+      document.getElementById("modal-gestion-" + id).style.display = "block";
+    }
+    function cerrarGestion(id) {
+      document.getElementById("modal-gestion-" + id).style.display = "none";
+    }
+    function abrirConfirmacion(id) {
+      document.getElementById("modal-confirmar-" + id).style.display = "block";
+    }
+    function cerrarConfirmacion(id) {
+      document.getElementById("modal-confirmar-" + id).style.display = "none";
+    }
+  </script>
+</body>
+</html>

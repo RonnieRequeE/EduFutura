@@ -6,39 +6,81 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <!-- Saludo con dropdown -->
-    <div class="bienvenida-dropdown">
-        <button onclick="toggleDropdown()">Bienvenido, {{ usuario }}</button>
-        <div id="dropdown-menu" class="dropdown-menu">
-            <form action="/logout" method="get">
-                <button type="submit">Cerrar sesión</button>
-            </form>
-        </div>
-    </div>
-
+    
     <!-- Título y descripción -->
     <h2>{{ curso.titulo }}</h2>
-    <div class="descripcion-curso">
-        <p>{{ curso.descripcion }}</p>
+    <div class="tarjeta">
+        <h3>{{ curso.nombre }}</h3>
     </div>
 
     <!-- Módulos del curso -->
     <div class="tarjeta">
+        <div class="encabezado-modulo">
         <h3>Módulos del curso</h3>
-        <ul>
-            {% for modulo in curso.modulos %}
-                <li>{{ modulo }}</li>
-            {% endfor %}
-        </ul>
+        {% if session['rol'] == 'docente' %}
+            <a href="/crear_modulo/{{ id }}">
+                <button>Crear módulo</button>
+            </a>
+        {% endif %}
+        </div>
+        <div class="grid-modulos">
+        {% for modulo in curso.modulos %}
+            <div class="mini-modulo">
+            <h4>{{ modulo.titulo }}</h4>
+            <p class="modulo-descripcion">{{ modulo.descripcion }}</p>
+            <p><strong>{{ modulo.inicio }} → {{ modulo.cierre }}</strong></p>
+
+            {% if modulo.etiquetas %}
+                <div class="modulo-etiquetas">
+                {% for etiqueta in modulo.etiquetas %}
+                    <span class="chip">{{ etiqueta }}</span>
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if session['rol'] == 'docente' %}
+                <a href="/editar_modulo/{{ modulo.id }}">
+                    <button class="boton-editar">✏️ Editar</button>
+                </a>
+            {% endif %}
+            </div>
+        {% else %}
+            <p>No hay módulos creados aún.</p>
+        {% endfor %}
+        </div>
+
     </div>
 
     <div class="tarjeta acceso-evaluacion">
-        <h3>¿Listo para poner a prueba tus conocimientos?</h3>
-            <p>Resuelve la evaluación y confirma tu dominio del contenido.</p>
-        <a href="/curso/{{ id }}/evaluacion">
-            <button>Ir a la evaluación</button>
+    <h3>¿Listo para poner a prueba tus conocimientos?</h3>
+    <p>Selecciona una evaluación para comenzar:</p>
+
+    <div class="grid-evaluaciones">
+        {% for evaluacion in evaluaciones_activas %}
+        <a href="/evaluacion/{{ evaluacion.id }}" class="tarjeta-evaluacion">
+        <h4>{{ evaluacion.titulo }}</h4>
+        <p>
+            {% if evaluacion.estado == 'completada' %}
+            ✅ Respondida
+            {% else %}
+            ⏳ Pendiente
+            {% endif %}
+        </p>
+        <p>
+            {% if evaluacion.calificada %}
+            ✅ Calificada — Nota: {{ evaluacion.nota }}
+            {% else %}
+            🕓 Sin calificar
+            {% endif %}
+        </p>
+        <small>Módulo: {{ evaluacion.modulo }}</small>
         </a>
+        {% else %}
+        <p style="text-align: center;">No hay evaluaciones activas por ahora.</p>
+        {% endfor %}
     </div>
+    </div>
+
 
     <!-- Notas del curso -->
     <div class="tarjeta notas-curso">
@@ -80,17 +122,15 @@
         <span class="porcentaje">60% completado</span>
     </div>
 
-    
-
     <a href="/panel">← Volver al panel</a>
-
+    
     <!-- Script para desplegar logout -->
     <script>
       function toggleDropdown() {
         const menu = document.getElementById('dropdown-menu');
         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
       }
+      
     </script>
 </body>
-
 </html>
